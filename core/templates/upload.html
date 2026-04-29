@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Leitor de PDF</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: #f1f5f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        h1, h3 {
+            text-align: center;
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            margin: 10px 0;
+            color: white;
+        }
+
+        button {
+            background: #38bdf8;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: #0f172a;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0ea5e9;
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .texto {
+            background: #020617;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .loader {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>📄 Leitor de PDF com Áudio</h1>
+
+    <form method="post" enctype="multipart/form-data" onsubmit="mostrarLoader()">
+        {% csrf_token %}
+        {{ form }}
+        <br>
+        <button type="submit">Gerar Áudio</button>
+    </form>
+
+    <div class="loader" id="loader">
+        ⏳ Gerando áudio, aguarde...
+    </div>
+
+    {% if audio_url %}
+        <h3>🎧 Áudio gerado:</h3>
+        <audio controls>
+            <source src="{{ audio_url }}" type="audio/mpeg">
+        </audio>
+    {% endif %}
+
+    {% if texto %}
+        <h3>📖 Texto extraído:</h3>
+        <div class="texto">
+            <pre>{{ texto }}</pre>
+        </div>
+    {% endif %}
+
+</div>
+
+<script>
+    function mostrarLoader() {
+        document.getElementById("loader").style.display = "block";
+    }
+</script>
+
+</body>
+</html>
